@@ -8,7 +8,7 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
     const[categories, setCategories] = useState([]);
     const[project, setProject] = useState(projectData || {});
     useEffect(()=> {
-        fetch("http://localhost:8080/categoria", {
+        fetch("http://localhost:8080/projeto", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'
@@ -26,6 +26,12 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
         console.log(project);
     }
     function handleCategory(e) {
+        setProject({...project})
+        console.log(project);
+    }
+    /*
+
+        function handleCategory(e) {
         setProject({...project, 
             category: {
             id: e.target.value,
@@ -34,11 +40,13 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
         })
         console.log(project);
     }
+    */
 
     const submit = (e) => {
         e.preventDefault()
-        console.log(project)
-        //handleSubmit(project)
+       //console.log(project)
+        handleSubmit(project)
+        window.location.href = "http://localhost:3000/projects"
     }
     return (
     <form onSubmit={submit} className={styles.form} >
