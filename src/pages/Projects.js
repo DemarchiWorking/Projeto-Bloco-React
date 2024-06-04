@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Message from '../components/Message';
 import ProjectCard from '../components/ProjectCard';
 import styles from './Projects.module.css';
+import Select from '../components/Select'
 function Projects(){
     const [projects, setProjects ] = useState([])
     
@@ -13,24 +14,22 @@ function Projects(){
         message = location.state.message;
     }
 
-    useEffect(() => {
-        fetch("http://localhost:8080/projeto", {
-          method: 'get',
-          headers: {
-            'content-type': 'application/json',
-          },
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            setProjects(data);
-        })
-        .catch((err) => console.log(err));
-      }, []);
-      
-      useEffect(() => {
-        console.log("aaaa"+projects);
-      }, [projects]);
-    
+    useEffect(()=> {
+            fetch("http://localhost:8080/projeto", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((resp) => resp.json())
+            .then((data) => {
+                setProjects(data);
+            })
+            .catch((err) => console.log(err))
+        }, [])
+        function handleCategory(e) {
+            console.log(projects);
+        }
     return (
         <div className={styles.project_container }>
             <div className={styles.container}>
@@ -43,17 +42,12 @@ function Projects(){
                 </div>
             </div>      
 
-
-
-            <p> proojetos</p>
-
-            { 
-            projects.lenght > 0 && projects.map((project) => 
+            {             projects.map((project) => 
                 <ProjectCard 
                         id={project.id}
                         name={project.name}
                         budget={project.budget}
-                        category={project.category.name}
+                        description={project.description}
                         key={project.id}
                         />)
             }
