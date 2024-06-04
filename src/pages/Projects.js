@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 import Message from '../components/Message';
 import ProjectCard from '../components/ProjectCard';
 import styles from './Projects.module.css';
-import Select from '../components/Select'
+import Loading from '../layout/Loading';
 function Projects(){
     const [projects, setProjects ] = useState([])
-    
+    const [removeLoading, setRemoveLoading] = useState(false);    
     const location = useLocation();
     let message = '';
     if(location.state){
@@ -15,17 +15,22 @@ function Projects(){
     }
 
     useEffect(()=> {
-            fetch("http://localhost:8080/projeto", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then((resp) => resp.json())
-            .then((data) => {
-                setProjects(data);
-            })
-            .catch((err) => console.log(err))
+        setTimeout(
+            () => {
+                fetch("http://localhost:8080/projeto", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((resp) => resp.json())
+                .then((data) => {
+                    setProjects(data);
+                    setRemoveLoading(true);
+                })
+                .catch((err) => console.log(err))
+                
+                }, 500)
         }, [])
         function handleCategory(e) {
             console.log(projects);
@@ -51,7 +56,10 @@ function Projects(){
                         key={project.id}
                         />)
             }
-
+            {!removeLoading && <Loading/>}
+            {removeLoading && projects.length === 0 && (
+                    <p> Não há projetos cadastrados.</p>
+            )}
         </div>
     )
 }
