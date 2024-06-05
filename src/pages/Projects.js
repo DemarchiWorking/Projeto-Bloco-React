@@ -7,7 +7,8 @@ import styles from './Projects.module.css';
 import Loading from '../layout/Loading';
 function Projects(){
     const [projects, setProjects ] = useState([])
-    const [removeLoading, setRemoveLoading] = useState(false);    
+    const [removeLoading, setRemoveLoading] = useState(false);  
+    const [projectMessage, setProjectMessage]  = useState('');
     const location = useLocation();
     let message = '';
     if(location.state){
@@ -17,7 +18,7 @@ function Projects(){
     useEffect(()=> {
         setTimeout(
             () => {
-                fetch("http://localhost:8080/projeto", {
+                fetch("http://localhost:8080/project", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -32,8 +33,19 @@ function Projects(){
                 
                 }, 500)
         }, [])
-        function handleCategory(e) {
-            console.log(projects);
+
+        function removeProject(id){
+            fetch(`http://localhost:8080/project/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(
+                resp => resp.json
+            ).then(() => {
+                setProjects(projects.filter((project) => project.id !== id))
+                setProjectMessage("Projeto removido com sucesso!")
+            }).catch(err => console.log(err))
         }
     return (
         <div className={styles.project_container }>
@@ -43,17 +55,20 @@ function Projects(){
 
           
                 <LinkButton to='newProject' text="Criar Projeto"></LinkButton>
-                {message &&   <Message msg="Sucesso" type="sucess"/> }
+                {message &&   <Message msg="Sucesso" type="sucess"/> }             
+                {projectMessage &&   <Message msg={projectMessage} type="error"/> }
                 </div>
             </div>      
 
-            {             projects.map((project) => 
+            {              
+                projects.map((project) => 
                 <ProjectCard 
                         id={project.id}
                         name={project.name}
                         budget={project.budget}
                         description={project.description}
                         key={project.id}
+                        handleRemove={removeProject}
                         />)
             }
             {!removeLoading && <Loading/>}

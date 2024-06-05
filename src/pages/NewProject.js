@@ -10,7 +10,7 @@ function NewProject({}) {
       //project.cost = 0
       //project.services = []
 
-      fetch("http://localhost:8080/projeto", {
+      fetch("http://localhost:8080/project", {
         method: "POST",
         headers: {
           'Content-type': 'application/json',

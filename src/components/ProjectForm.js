@@ -8,7 +8,7 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
     const[categories, setCategories] = useState([]);
     const[project, setProject] = useState(projectData || {});
     useEffect(()=> {
-        fetch("http://localhost:8080/projeto", {
+        fetch("http://localhost:8080/category", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'
