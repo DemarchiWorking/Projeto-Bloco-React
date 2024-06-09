@@ -7,8 +7,11 @@ function ServiceForm( {handleSubmit, btnText, projectData}) {
     const [service, setService] = useState({})
     const itenService = {};
         function submit(e) {
+            var objetoPost = service;
+            objetoPost.projectId = projectData.id;
             e.preventDefault()
-            fetch("http://localhost:8080/project", {
+            console.log(JSON.stringify(objetoPost))
+            fetch(`http://localhost:8080/service`, {
                 method: "POST",
                 headers: {
                   'Content-type': 'application/json',
@@ -18,16 +21,15 @@ function ServiceForm( {handleSubmit, btnText, projectData}) {
                   .then((resp) => resp.json())
                   .then((data) => {
                     console.log(data);
+                    window.location= "http://localhost:3000/projects"
                 })
                 .catch((err) => console.log(err))
-              }
-        
-            
-
+            }
             //projectData.service.push(service)
             //handleSubmit(itenService)            
-            console.log(itenService)
-        }
+            //console.log(itenService)
+        
+    
         function handleChange(e){
             setService({...service, [e.target.name]: e.target.value})
         }
@@ -44,7 +46,7 @@ function ServiceForm( {handleSubmit, btnText, projectData}) {
                 <Input 
                     type="number"
                     text="Custo do serviço"
-                    name="coast"
+                    name="cost"
                     placeholder="Insira o valor total"
                     handleOnChange={handleChange}
                     />

@@ -17,6 +17,7 @@ function Project(){
     const [showServiceForm, setShowServiceForm]= useState(false)
     useEffect(()=> {
         setTimeout(() => {
+        console.log(`http://localhost:8080/project/${id}`)  
         fetch(`http://localhost:8080/project/${id}`, {
             method: 'GET',
             headers:{ 
@@ -33,7 +34,7 @@ function Project(){
     
     useEffect(()=> {
         setTimeout(() => {
-        fetch(`http://localhost:8080/service`, {
+        fetch(`http://localhost:8080/service/project/${id}`, {
             method: 'GET',
             headers:{ 
                 'Content-Type': 'application/json'
@@ -109,7 +110,7 @@ function Project(){
                                 <span> Total de Orçameto:</span> R${project.budget}
                             </p>
                             <p>
-                                <span> Total Utilizado: </span> R${projectCost}
+                                <span> Total : </span> R${projectCost}
                             </p>
                         </div>
                     )   :
