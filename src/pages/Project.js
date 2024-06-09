@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react'
 import Loading from '../layout/Loading';
 import ServiceForm from '../components/ServiceForm'
 import { parse, v4 as uuidv4} from 'uuid';
+import ServiceCard from '../components/ServiceCard';
 import ProjectForm from '../components/ProjectForm';
 function Project(){
     const { id } = useParams();
     console.log(id);
-    const projectCost = 5000;
+
+    const [projectCost, setProjectCost] = useState(0)
     const [project, setProject] = useState([])
+    const [service, setService] = useState([])
     const [showProjectForm, setShowProjectForm]= useState(false)
     const [showServiceForm, setShowServiceForm]= useState(false)
     useEffect(()=> {
@@ -23,6 +26,28 @@ function Project(){
             .then((resp) => resp.json())
             .then((data) => {
                 setProject(data)
+            }) 
+            .catch(err => console.log)
+    },400)
+    }, [id])
+    
+    useEffect(()=> {
+        setTimeout(() => {
+        fetch(`http://localhost:8080/service`, {
+            method: 'GET',
+            headers:{ 
+                'Content-Type': 'application/json'
+            }, 
+        }) 
+            .then((resp) => resp.json())
+            .then((data) => {
+                setService(data)
+                var cost = 0
+                data.forEach(element => {
+                     cost += element.cost;
+                });
+                setProjectCost(cost)
+                setShowServiceForm(false)
             }) 
             .catch(err => console.log)
     },400)
@@ -55,6 +80,9 @@ function Project(){
     function createService(service){
         const lastService = service;
         
+    }
+    function removeService(){
+
     }
     function togglePeojectForm(){
         setShowProjectForm(!showProjectForm);
@@ -111,7 +139,21 @@ function Project(){
                 </div>
                 <h2>Serviços</h2>
                 <div>
-                    <p> Itens de serviços </p>
+                    {service.length > 0 &&
+                        service.map((service) =>(
+                            <ServiceCard
+                                id={service.id}
+                                name={service.name}
+                                cost={service.cost}
+                                description={service.description}
+                                key={service.id}
+                                handleRemove={removeService}
+                            />
+                        ))
+                    }
+                    {
+                        service.length ===0 && <p> Não há serviços cadastrados. </p>
+                    }
                 </div>
             </div>
         ): (

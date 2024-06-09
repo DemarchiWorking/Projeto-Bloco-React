@@ -8,8 +8,25 @@ function ServiceForm( {handleSubmit, btnText, projectData}) {
     const itenService = {};
         function submit(e) {
             e.preventDefault()
-            projectData.service.push(service)
-            handleSubmit(itenService)
+            fetch("http://localhost:8080/project", {
+                method: "POST",
+                headers: {
+                  'Content-type': 'application/json',
+                },
+                body: JSON.stringify(service),
+                })
+                  .then((resp) => resp.json())
+                  .then((data) => {
+                    console.log(data);
+                })
+                .catch((err) => console.log(err))
+              }
+        
+            
+
+            //projectData.service.push(service)
+            //handleSubmit(itenService)            
+            console.log(itenService)
         }
         function handleChange(e){
             setService({...service, [e.target.name]: e.target.value})
