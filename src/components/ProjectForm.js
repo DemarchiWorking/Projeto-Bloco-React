@@ -78,15 +78,14 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
                 />
         </div>
         <div>
-        <Select name="category_id" 
-                text="Selecione a categoria" 
-                options={categories}
-                handleOnChange={handleCategory}
-                value={project.category ? project.category.id : ''}
-                >
-
-        </Select>
-        </div>
+            {
+            //    <Select name="category_id" 
+            //    text="Selecione a categoria" 
+            //    options={categories}
+            //    handleOnChange={handleCategory}
+            //    value={project.category ? project.category.id : ''}    ></Select>
+            }
+            </div>
         <div>
             <SubmitButton text={btnText}/>
         </div>

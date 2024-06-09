@@ -24,13 +24,12 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
     return (
     <form>
      {projects}
-        <Select name="category_id" 
-                text="Selecione a categoria" 
-                options={projects}
-                >
-
-        </Select>
-
+     
+       {// <Select name="category_id" 
+        //        text="Selecione a categoria" 
+        //        options={projects}
+        //</form>        ></Select>
+       }
     </form>)
 }
 export default ProjectForm
