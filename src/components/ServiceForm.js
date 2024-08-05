@@ -11,7 +11,7 @@ function ServiceForm( {handleSubmit, btnText, projectData}) {
             objetoPost.projectId = projectData.id;
             e.preventDefault()
             console.log(JSON.stringify(objetoPost))
-            fetch(`http://localhost:8080/service`, {
+            fetch(`http://localhost:8761/service`, {
                 method: "POST",
                 headers: {
                   'Content-type': 'application/json',

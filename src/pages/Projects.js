@@ -18,7 +18,7 @@ function Projects(){
     useEffect(()=> {
         setTimeout(
             () => {
-                fetch("http://localhost:8080/project", {
+                fetch("http://localhost:8761/project", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ function Projects(){
         }, [])
 
         function removeProject(id){
-            fetch(`http://localhost:8080/project/${id}`, {
+            fetch(`http://localhost:8761/project/${id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

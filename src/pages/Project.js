@@ -6,6 +6,7 @@ import ServiceForm from '../components/ServiceForm'
 import { parse, v4 as uuidv4} from 'uuid';
 import ServiceCard from '../components/ServiceCard';
 import ProjectForm from '../components/ProjectForm';
+import Comentarios from '../components/comentarios/Comentarios';
 function Project(){
     const { id } = useParams();
     console.log(id);
@@ -17,8 +18,8 @@ function Project(){
     const [showServiceForm, setShowServiceForm]= useState(false)
     useEffect(()=> {
         setTimeout(() => {
-        console.log(`http://localhost:8080/project/${id}`)  
-        fetch(`http://localhost:8080/project/${id}`, {
+        console.log(`http://localhost:8761/project/${id}`)  
+        fetch(`http://localhost:8761/project/${id}`, {
             method: 'GET',
             headers:{ 
                 'Content-Type': 'application/json'
@@ -34,7 +35,7 @@ function Project(){
     
     useEffect(()=> {
         setTimeout(() => {
-        fetch(`http://localhost:8080/service/project/${id}`, {
+        fetch(`http://localhost:8761/service/project/${id}`, {
             method: 'GET',
             headers:{ 
                 'Content-Type': 'application/json'
@@ -60,7 +61,7 @@ function Project(){
         if(project.budget < projectCost.projectCost){
             //mensagem
         }
-        fetch(`http://localhost:8080/project/${project.id}`,
+        fetch(`http://localhost:8761/project/${project.id}`,
             {
                 method:'PATCH',
                 headers:{
@@ -156,6 +157,7 @@ function Project(){
                         service.length ===0 && <p> Não há serviços cadastrados. </p>
                     }
                 </div>
+                <Comentarios id={id}/>
             </div>
         ): (
         

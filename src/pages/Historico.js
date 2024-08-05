@@ -21,7 +21,7 @@ function Historicos() {
     useEffect(()=> {
         setTimeout(
             () => {
-                fetch("http://localhost:8080/historico", {
+                fetch("http://localhost:8761/historico", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
