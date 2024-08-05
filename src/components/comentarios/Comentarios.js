@@ -117,12 +117,14 @@ function Comentarios({id}){
     }
     function startEdit(id, nome, conteudo) {
         setEditId(id)
-        document.querySelector("#comment_form #nome")
-        document.querySelector("#comment_form #conteudo")
+        document.querySelector("#comment_form #nome").value = nome
+        document.querySelector("#comment_form #conteudo").value = conteudo
     }
     function editComment(_id, _conteudo) {
         setEditId(-1)
-        setComms( comms.map( (com) => com.id == _id ? {...com, conteudo:_conteudo} : com )   )
+        document.querySelector("#comment_form #nome").value = ""
+        document.querySelector("#comment_form #conteudo").value = ""
+        setComms( comms.map( (com) => com.id == _id ? {...com, conteudo:_conteudo} : com )  )
     }
     function postComment() {
         setComms([])
