@@ -4,7 +4,7 @@ import Company from './pages/Company';
 import NewProject from './pages/NewProject';
 import Contact from './pages/Contact';
 import Home from './pages/Home';
-import Historicos from './pages/Historico';
+//import Historicos from './pages/Historico';
 import Container from './layout/Container';
 
 import Footer from './layout/Footer';
@@ -24,7 +24,6 @@ function App() {
         <Route path='/newProject' element={<NewProject/>}></Route>
         <Route path='/projects' element={<Projects/>}></Route>
         <Route path='/project/:id' element={<Project/>}></Route>
-        <Route path='/historico' element={<Historicos/>}></Route>
       </Routes>
       </div>
     </BrowserRouter>      

@@ -18,7 +18,7 @@ function Projects(){
     useEffect(()=> {
         setTimeout(
             () => {
-                fetch("http://localhost:8761/project", {
+                fetch("http://localhost:8080/project/", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -26,16 +26,17 @@ function Projects(){
                 })
                 .then((resp) => resp.json())
                 .then((data) => {
+                    console.log(data)
                     setProjects(data);
                     setRemoveLoading(true);
                 })
                 .catch((err) => console.log(err))
                 
-                }, 500)
+                }, 500) 
         }, [])
 
         function removeProject(id){
-            fetch(`http://localhost:8761/project/${id}`, {
+            fetch(`http://localhost:8080/main/${id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,6 +70,7 @@ function Projects(){
                         description={project.description}
                         key={project.id}
                         handleRemove={removeProject}
+                        proceeding={project.proceeding}
                         />)
             }
             {!removeLoading && <Loading/>}
