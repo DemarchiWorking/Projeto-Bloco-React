@@ -13,7 +13,6 @@ function Navbar(){
         <li className={styles.item}><a href="/company">Empresa</a></li>
         <li className={styles.item}><a href="/contact"> Contato </a></li>
         <li className={styles.item}><a href="/newProject"> Novo Projeto </a></li>
-		<li className={styles.item}><a href="/historico"> Histórico </a></li>
 
         </ul>
 

@@ -4,8 +4,8 @@ import styles from '../components/ProjectCard.module.css'
 function ServiceCard({id, name, cost, description, handleRemove}){
     const remove = (e) => {
         e.preventDefault();
-        console.log(`http://localhost:8761/service/${id}`)
-        fetch(`http://localhost:8761/service/${id}`, {
+        console.log(`http://localhost:8080/service/${id}`)
+        fetch(`http://localhost:8080/service/${id}`, {
             method: "DELETE",
             headers: {
               'Content-type': 'application/json',

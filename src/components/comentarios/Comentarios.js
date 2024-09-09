@@ -20,7 +20,7 @@ function CommentForm({secao_id, edit_id, handleEdit, handlePost}) {
     function submit(e) {
         console.log(JSON.stringify(newcom))
         e.preventDefault()
-        fetch("http://localhost:8081/" + (edit_id > -1 ? `comentarios/${edit_id}` : `secoes/${secao_id}/comentarios`), {
+        fetch("http://localhost:8080/" + (edit_id > -1 ? `comentarios/${edit_id}` : `secoes/${secao_id}/comentarios`), {
             method: edit_id > -1 ? "PUT" : "POST",
             headers: {
               'Content-type': 'application/json',
@@ -73,7 +73,7 @@ function Comentarios({id}){
     function getComments() {
         setTimeout(
             () => {
-                fetch(`http://localhost:8081/secoes/por_proj/${id}`, {
+                fetch(`http://localhost:8080/secoes/por_proj/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -81,18 +81,21 @@ function Comentarios({id}){
                 })
                 .then((resp) => { 
                     if (resp.status == 404)
-                        fetch("http://localhost:8081/secoes", {
+                        fetch("http://localhost:8080/secoes", {
                             method:'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({id_projeto:id})
-                        }).then(() => setTimeout(getComments, 500))
+                        }).then(() => setTimeout(getComments, 1500))
                         .catch( (err) => console.log(err) )
                     return resp.json()})
                 .then((data) => {
-                    setSecaoId(data.id)
-                    setComms(data.comentarios);
+                    if (data.comentarios != undefined) {
+                        setSecaoId(data.id)
+                        setComms(data.comentarios);
+                    }
+                    
                 })
                 .catch((err) => console.log(err))
                 
@@ -103,7 +106,7 @@ function Comentarios({id}){
 
 
     function deleteComment(_id) {
-        fetch(`http://localhost:8081/comentarios/${_id}`, {
+        fetch(`http://localhost:8080/comentarios/${_id}`, {
             method: "DELETE",
             headers: {
               'Content-type': 'application/json',

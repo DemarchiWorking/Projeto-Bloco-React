@@ -18,8 +18,8 @@ function Project(){
     const [showServiceForm, setShowServiceForm]= useState(false)
     useEffect(()=> {
         setTimeout(() => {
-        console.log(`http://localhost:8761/project/${id}`)  
-        fetch(`http://localhost:8761/project/${id}`, {
+        console.log(`http://localhost:8080/project/${id}`)  
+        fetch(`http://localhost:8080/project/${id}`, {
             method: 'GET',
             headers:{ 
                 'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ function Project(){
     
     useEffect(()=> {
         setTimeout(() => {
-        fetch(`http://localhost:8761/service/project/${id}`, {
+        fetch(`http://localhost:8080/service/project/${id}`, {
             method: 'GET',
             headers:{ 
                 'Content-Type': 'application/json'
@@ -61,9 +61,9 @@ function Project(){
         if(project.budget < projectCost.projectCost){
             //mensagem
         }
-        fetch(`http://localhost:8761/project/${project.id}`,
+        fetch(`http://localhost:8080/main/${project.id}`,
             {
-                method:'PATCH',
+                method:'PUT',
                 headers:{
                     'Content-Type': 'application/json',
 
@@ -92,6 +92,46 @@ function Project(){
     function toggleServiceForm(){
         setShowServiceForm(!showServiceForm);
     }
+    function proceedState(e) {
+        e.preventDefault()
+        let new_state = "NAO_INICIADO"
+        if (project.proceeding == "NAO_INICIADO") {
+            new_state = "ANDAMENTO"
+        } else if (project.proceeding == "ANDAMENTO"){
+            new_state = "CONCLUIDO"
+        }
+
+        var objetoPost = project;
+        objetoPost.proceeding = new_state
+        fetch(`http://localhost:8080/main/andamento`, {
+            method: "POST",
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(objetoPost),
+            })
+              .then((resp) => resp.json())
+              .then((data) => {
+                console.log(data);
+                window.location= `http://localhost:3000/project/${project.id}`
+            })
+            .catch((err) => console.log(err))
+    }
+    function stateButton() {
+        let txt = ""
+        if (project.proceeding == "NAO_INICIADO") {
+            txt = "Iniciar Projeto"
+        } else if (project.proceeding == "ANDAMENTO"){
+            txt = "Concluir Projeto"
+        }
+        else {
+            return <button className={styles.btn}>Projeto Concluido</button>
+        }
+        return (<button className={styles.btn} onClick={proceedState} >
+            {txt}
+        </button>)
+    }
+
     return (
         <> 
         {project.name ? (
@@ -101,6 +141,7 @@ function Project(){
                     <button className={styles.btn} onClick={togglePeojectForm} >
                         {!showProjectForm ? 'Editar Projeto':'Fechar' }
                     </button>
+                    {stateButton()}
                     {!showProjectForm ? (
                         <div className={styles.project_info}>
                             <br></br>

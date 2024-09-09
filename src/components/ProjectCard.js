@@ -1,7 +1,7 @@
 import styles from './ProjectCard.module.css';
 import {BsPencil, BsFillTrashFill } from 'react-icons/bs';
 
-function ProjectCard({id, name,budget, description, category, handleRemove}){
+function ProjectCard({id, name,budget, description, category, handleRemove, proceeding}){
 
     const remove = (e) => {
         e.preventDefault()
@@ -21,6 +21,9 @@ function ProjectCard({id, name,budget, description, category, handleRemove}){
             <p>
                 <span> {category} </span>
 
+            </p>
+            <p>
+                <span>{proceeding.replace("_", " ")}</span>
             </p>
             <div className={styles.project_card_actions}> 
                 <a href={`/project/${id}`}><p> Visualizar</p> </a> 
