@@ -3,6 +3,7 @@ import Input from './Input';
 import styles from './ProjectForm.module.css';
 import Select from './Select';
 import SubmitButton from './SubmitButton';
+import { loadSession } from './alunos/AlunoSession';
 function ProjectForm({ handleSubmit, btnText, projectData}){
 
     const[categories, setCategories] = useState([]);
@@ -45,9 +46,11 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
     const submit = (e) => {
         e.preventDefault()
        //console.log(project)
+       // const matches = project.name.match( new RegExp(/^(.*)\((\w+)\[(\d+)\]\)$/gm) )
+        project.name = project.name + ` (${loadSession().nome}[${loadSession().id}])`
         handleSubmit(project)
-        window.location.href = "http://localhost:3000/projects"
     }
+
     return (
     <form onSubmit={submit} className={styles.form} >
         <div>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import SubmitButton from '../SubmitButton'
 import Input from '../Input'
+import { loadSession } from '../alunos/AlunoSession'
+import { HttpStatusCode } from 'axios'
 
 function Comentario({id, nome, conteudo, date, handleStartEdit, handleDelete}) {
     return (
@@ -19,6 +21,7 @@ function CommentForm({secao_id, edit_id, handleEdit, handlePost}) {
     const [newcom, setNewcom] = useState({})
     function submit(e) {
         console.log(JSON.stringify(newcom))
+        newcom.nome = loadSession().nome
         e.preventDefault()
         fetch("http://localhost:8080/" + (edit_id > -1 ? `comentarios/${edit_id}` : `secoes/${secao_id}/comentarios`), {
             method: edit_id > -1 ? "PUT" : "POST",
@@ -49,9 +52,11 @@ function CommentForm({secao_id, edit_id, handleEdit, handlePost}) {
                 name="nome"
                 placeholder="Seu nome."
                 handleOnChange={handleChange}
+                value={loadSession().nome}
+                _disabled={true}
                 />
 
-            <Input 
+            <Input  
                 type="text"
                 text="Conteudo"
                 name="conteudo"
@@ -80,14 +85,15 @@ function Comentarios({id}){
                     },
                 })
                 .then((resp) => { 
-                    if (resp.status == 404)
+                    console.log(resp)
+                    if (resp.status == HttpStatusCode.NotFound)
                         fetch("http://localhost:8080/secoes", {
                             method:'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({id_projeto:id})
-                        }).then(() => setTimeout(getComments, 1500))
+                        }).then(() => setTimeout(getComments, 5000))
                         .catch( (err) => console.log(err) )
                     return resp.json()})
                 .then((data) => {

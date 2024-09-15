@@ -5,6 +5,8 @@ import Message from '../components/Message';
 import ProjectCard from '../components/ProjectCard';
 import styles from './Projects.module.css';
 import Loading from '../layout/Loading';
+import { HttpStatusCode } from 'axios';
+import { isLoggedIn, reloadData } from '../components/alunos/AlunoSession';
 function Projects(){
     const [projects, setProjects ] = useState([])
     const [removeLoading, setRemoveLoading] = useState(false);  
@@ -44,6 +46,17 @@ function Projects(){
             }).then(
                 resp => resp.json
             ).then(() => {
+                    fetch(`http://localhost:8080/aluno/projetos/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then( resp => {
+                            if (resp.status == HttpStatusCode.Ok)
+                                reloadData()
+                        } )
+                        .catch(err => console.log(err))
                 setProjects(projects.filter((project) => project.id !== id))
                 setProjectMessage("Projeto removido com sucesso!")
             }).catch(err => console.log(err))
@@ -54,8 +67,7 @@ function Projects(){
                 <div className={styles.title_container}>
                 <h1> Meus  Projetos </h1>
 
-          
-                <LinkButton to='newProject' text="Criar Projeto"></LinkButton>
+                {isLoggedIn() ? <LinkButton to='newProject' text="Criar Projeto"></LinkButton> : ""}
                 {message &&   <Message msg="Sucesso" type="sucess"/> }             
                 {projectMessage &&   <Message msg={projectMessage} type="error"/> }
                 </div>
