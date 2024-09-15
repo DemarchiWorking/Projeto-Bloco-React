@@ -1,3 +1,4 @@
+import { canManipulateProjectTest } from './alunos/AlunoSession';
 import styles from './ProjectCard.module.css';
 import {BsPencil, BsFillTrashFill } from 'react-icons/bs';
 
@@ -27,7 +28,7 @@ function ProjectCard({id, name,budget, description, category, handleRemove, proc
             </p>
             <div className={styles.project_card_actions}> 
                 <a href={`/project/${id}`}><p> Visualizar</p> </a> 
-                <button onClick={remove}><BsFillTrashFill/><p> Remover </p></button>
+                {canManipulateProjectTest(name) ? (<button onClick={remove}><BsFillTrashFill/><p> Remover </p></button>) : ""}
             </div>
         </div>)
 }

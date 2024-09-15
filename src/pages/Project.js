@@ -7,6 +7,7 @@ import { parse, v4 as uuidv4} from 'uuid';
 import ServiceCard from '../components/ServiceCard';
 import ProjectForm from '../components/ProjectForm';
 import Comentarios from '../components/comentarios/Comentarios';
+import { canManipulateProjectTest, isLoggedIn } from '../components/alunos/AlunoSession';
 function Project(){
     const { id } = useParams();
     console.log(id);
@@ -68,13 +69,13 @@ function Project(){
                     'Content-Type': 'application/json',
 
                 },
-                body: JSON.stringify(project),
+                body: JSON.stringify(project)
             })
             .then(resp => resp.json())
             .then((data) => {
                 setProject(data)
                 setShowProjectForm(false);
-            // mensagem
+            
             })
             .catch(err => console.log(err))
 
@@ -108,7 +109,7 @@ function Project(){
             headers: {
               'Content-type': 'application/json',
             },
-            body: JSON.stringify(objetoPost),
+            body: JSON.stringify(objetoPost)
             })
               .then((resp) => resp.json())
               .then((data) => {
@@ -138,10 +139,10 @@ function Project(){
             <div className={styles.project_details}> 
                 <div className={styles.details_container}>
                     <h1> Projeto: {project.name}</h1>
-                    <button className={styles.btn} onClick={togglePeojectForm} >
+                    {canManipulateProjectTest(project.name) ? (<button className={styles.btn} onClick={togglePeojectForm} >
                         {!showProjectForm ? 'Editar Projeto':'Fechar' }
-                    </button>
-                    {stateButton()}
+                    </button>) : ""}
+                    {canManipulateProjectTest(project.name) ? stateButton() : ""}
                     {!showProjectForm ? (
                         <div className={styles.project_info}>
                             <br></br>
@@ -164,7 +165,7 @@ function Project(){
                         </div>
                     )}
                 </div>
-                <div className={styles.service_form_container}>
+                {canManipulateProjectTest(project.name) ? (<div className={styles.service_form_container}>
                     <h2> Adicione um Serviço </h2>
 
 
@@ -179,7 +180,7 @@ function Project(){
                                 projectData={project}/>
                         )}
                     </div>
-                </div>
+                </div>) : ""}
                 <h2>Serviços</h2>
                 <div>
                     {service.length > 0 &&
@@ -198,7 +199,7 @@ function Project(){
                         service.length ===0 && <p> Não há serviços cadastrados. </p>
                     }
                 </div>
-                <Comentarios id={id}/>
+                {isLoggedIn() ? <Comentarios id={id}/> : "" }
             </div>
         ): (
         

@@ -1,6 +1,16 @@
+import { isLoggedIn, loadSession, logout } from '../components/alunos/AlunoSession'
 import styles from './Navbar.module.css'
 
 function Navbar(){
+    function getLoginStuff() {
+        if (isLoggedIn()) {
+            <li className={styles.item}><a href="/newProject"> Novo Projeto </a></li>
+            return <li onClick={logout} className={styles.item}><a href="#">Olá {loadSession().nome}! (Logout)</a></li>
+        }
+        else 
+            return <li className={styles.item}><a href="/login">Login</a></li>
+    }
+    
 
     return (
     <nav className={styles.navbar}>
@@ -12,8 +22,7 @@ function Navbar(){
         <li className={styles.item}><a href="/projects"> Projetos </a></li>
         <li className={styles.item}><a href="/company">Empresa</a></li>
         <li className={styles.item}><a href="/contact"> Contato </a></li>
-        <li className={styles.item}><a href="/newProject"> Novo Projeto </a></li>
-
+        {getLoginStuff()}
         </ul>
 
     </nav> 
