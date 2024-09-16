@@ -7,7 +7,7 @@ import { parse, v4 as uuidv4} from 'uuid';
 import ServiceCard from '../components/ServiceCard';
 import ProjectForm from '../components/ProjectForm';
 import Comentarios from '../components/comentarios/Comentarios';
-import { canManipulateProjectTest, isLoggedIn } from '../components/alunos/AlunoSession';
+import { canManipulateProject, isLoggedIn } from '../components/alunos/AlunoSession';
 function Project(){
     const { id } = useParams();
     console.log(id);
@@ -15,6 +15,7 @@ function Project(){
     const [projectCost, setProjectCost] = useState(0)
     const [project, setProject] = useState([])
     const [service, setService] = useState([])
+    const [projectowner, setProjectowner]= useState("N/A")
     const [showProjectForm, setShowProjectForm]= useState(false)
     const [showServiceForm, setShowServiceForm]= useState(false)
     useEffect(()=> {
@@ -51,6 +52,17 @@ function Project(){
                 });
                 setProjectCost(cost)
                 setShowServiceForm(false)
+            }) 
+            .catch(err => console.log)
+        fetch(`http://localhost:8080/aluno/by_proj/${id}`, {
+            method: 'GET',
+            headers:{ 
+                'Content-Type': 'application/json'
+            }, 
+        }) 
+            .then((resp) => resp.json())
+            .then((data) => {
+                setProjectowner(data.nome)
             }) 
             .catch(err => console.log)
     },400)
@@ -139,13 +151,16 @@ function Project(){
             <div className={styles.project_details}> 
                 <div className={styles.details_container}>
                     <h1> Projeto: {project.name}</h1>
-                    {canManipulateProjectTest(project.name) ? (<button className={styles.btn} onClick={togglePeojectForm} >
+                    {canManipulateProject(project.id) ? (<button className={styles.btn} onClick={togglePeojectForm} >
                         {!showProjectForm ? 'Editar Projeto':'Fechar' }
                     </button>) : ""}
-                    {canManipulateProjectTest(project.name) ? stateButton() : ""}
+                    {canManipulateProject(project.id) ? stateButton() : ""}
                     {!showProjectForm ? (
                         <div className={styles.project_info}>
                             <br></br>
+                            <p>
+                                <span> Criador/Criadora: </span> {projectowner}
+                            </p>
                             <p>
                                 <span> Descrição: </span> {project.description}
                             </p>
@@ -165,7 +180,7 @@ function Project(){
                         </div>
                     )}
                 </div>
-                {canManipulateProjectTest(project.name) ? (<div className={styles.service_form_container}>
+                {canManipulateProject(project.id) ? (<div className={styles.service_form_container}>
                     <h2> Adicione um Serviço </h2>
 
 

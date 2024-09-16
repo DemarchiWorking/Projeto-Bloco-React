@@ -47,7 +47,6 @@ function ProjectForm({ handleSubmit, btnText, projectData}){
         e.preventDefault()
        //console.log(project)
        // const matches = project.name.match( new RegExp(/^(.*)\((\w+)\[(\d+)\]\)$/gm) )
-        project.name = project.name + ` (${loadSession().nome}[${loadSession().id}])`
         handleSubmit(project)
     }
 
