@@ -3,11 +3,13 @@ import AlunoLogin from '../components/alunos/AlunoLogin';
 import { saveSession } from '../components/alunos/AlunoSession';
 import styles from './Login.module.css';
 import { useState } from 'react';
+import Loading from '../layout/Loading';
 
 function Login({}) {
     const [logstatus, setLogstatus] = useState("");  
+    const [loading, setLoading] = useState(false);  
     function createPost(aluno){
-
+      setLoading(true)
       fetch("http://localhost:8080/aluno/login", {
         method: "POST",
         headers: {
@@ -29,8 +31,9 @@ function Login({}) {
                 window.location.href = "http://localhost:3000/projects"
             } else
                 setLogstatus("Senha ou nome invalido!")
+            setLoading(false)
         })
-        .catch((err) => setLogstatus("Ocorreu um erro!"))
+        .catch((err) => { setLogstatus("Ocorreu um erro!"); setLoading(false) })
       }
 
     return (
@@ -39,6 +42,7 @@ function Login({}) {
         <p> Entre na sua conta de aluno INFNET. </p><br></br>
         <span>{logstatus}</span>
         <AlunoLogin handleSubmit={createPost}/>
+        {loading ? <Loading/> : ""}
       </div>
     );
   }

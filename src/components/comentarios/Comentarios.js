@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import SubmitButton from '../SubmitButton'
 import Input from '../Input'
-import { loadSession } from '../alunos/AlunoSession'
+import { isLoggedIn, loadSession } from '../alunos/AlunoSession'
 import { HttpStatusCode } from 'axios'
 
 function Comentario({id, nome, conteudo, date, handleStartEdit, handleDelete}) {
@@ -10,10 +10,12 @@ function Comentario({id, nome, conteudo, date, handleStartEdit, handleDelete}) {
         <h3>{nome}</h3>
         <p>{conteudo}</p>
         <h6>Postado em {date}</h6>
+        {isLoggedIn() ? (
         <div>
             <button onClick={() => handleStartEdit(id, nome, conteudo)}>Editar</button>
             <button onClick={() => handleDelete(id)}>Apagar</button>
         </div>
+        ) : ""}
     </div>)
 }
 
